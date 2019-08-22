@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--开启扫描包-->
+    <context:component-scan base-package="com.lgs.entity"/>
+    <!--数据源-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/oa?useUnicode=true&amp;characterEncoding=utf-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="645974950a"/>
+    </bean>
+    <!--mybatis的相关配置: sqlSession-->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--这里是使用别名 填写实体类的包前缀-->
+        <property name="typeAliasesPackage" value="com.lgs.entity"/>
+    </bean>
+
+    <!--mybatis的映射接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--这里因为是SqlSessionFactoryBeanName 而不是SqlSessionFactoryBean 所以不是对象 要用字符串 -->
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
+        <!--这里填写的是等下要在资源文件（resources）下要创建的文件夹 即接口所放置的包即配置的映射文件也要放在相应的包下-->
+        <property name="basePackage" value="com.lgs.dao"/>
+    </bean>
+
+
+</beans>
