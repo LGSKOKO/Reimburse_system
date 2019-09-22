@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lgs.dao.DepartmentDao">
+
+    <!--配置结果集-->
+    <resultMap id="department" type="Department">
+        <!--主键用id 其他的用result-->
+        <!--property:属性 column:字段 javaType:数据类型-->
+        <id property="sn" column="sn" javaType="String"/>
+        <result property="name" column="name" javaType="String"/>
+        <result property="address" column="address" javaType="String"/>
+    </resultMap>
+
+    <!--插入方法 id:对应DepartmentDao对应的方法 -->
+    <!--这里的parameterType: 我们使用的是别名 因为我们在spring-dao.xml进行了配置-->
+    <insert id="insert" parameterType="Department">
+        insert into department values (#{sn},#{name},#{address})
+    </insert>
+
+    <!--更新方法-->
+    <update id="update" parameterType="Department">
+        update department set name=#{name},address=#{address} where sn=#{sn}
+    </update>
+
+    <!--删除方法-->
+    <delete id="delete" parameterType="String">
+        delete from department where sn=#{sn}
+    </delete>
+
+     <!--查询方法-->
+    <select id="select" parameterType="String" resultMap="department">
+        select * from department where sn=#{sn}
+    </select>
+
+    <select id="selectAll" resultMap="department">
+        select * from department
+    </select>
+
+
+</mapper>
